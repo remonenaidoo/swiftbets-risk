@@ -1,0 +1,20 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  dotnet:
+    uses: remonenaidoo/swiftbets-platform/.github/workflows/dotnet.yml@main
+    with:
+      images: '[{"name": "swiftbets-risk", "dockerfile": "deploy/SwiftBets.Risk.Worker.Dockerfile"}]'
+    permissions:
+      contents: read
+      packages: write
+      security-events: write

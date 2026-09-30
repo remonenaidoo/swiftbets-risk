@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SwiftBets.BuildingBlocks.Observability" />
+    <PackageReference Include="SwiftBets.BuildingBlocks.Web" />
+    <ProjectReference Include="../SwiftBets.Risk.Infrastructure/SwiftBets.Risk.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

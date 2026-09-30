@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SwiftBets.Risk.Application/SwiftBets.Risk.Application.csproj" />
+    <Project Path="src/SwiftBets.Risk.Domain/SwiftBets.Risk.Domain.csproj" />
+    <Project Path="src/SwiftBets.Risk.Infrastructure/SwiftBets.Risk.Infrastructure.csproj" />
+    <Project Path="src/SwiftBets.Risk.Worker/SwiftBets.Risk.Worker.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SwiftBets.Risk.ArchitectureTests/SwiftBets.Risk.ArchitectureTests.csproj" />
+    <Project Path="tests/SwiftBets.Risk.Worker.Tests/SwiftBets.Risk.Worker.Tests.csproj" />
+  </Folder>
+</Solution>
