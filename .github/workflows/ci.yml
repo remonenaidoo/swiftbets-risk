@@ -15,6 +15,6 @@ jobs:
     with:
       images: '[{"name": "swiftbets-risk", "dockerfile": "deploy/SwiftBets.Risk.Worker.Dockerfile"}]'
     permissions:
-      contents: write
+      contents: read
       packages: write
       security-events: write
