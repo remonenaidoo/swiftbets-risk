@@ -9,7 +9,7 @@
     <PackageVersion Include="SwiftBets.BuildingBlocks.Messaging" Version="0.1.0" />
     <PackageVersion Include="SwiftBets.BuildingBlocks.Observability" Version="0.1.0" />
     <PackageVersion Include="SwiftBets.BuildingBlocks.Web" Version="0.1.0" />
-    <PackageVersion Include="SwiftBets.Contracts" Version="0.1.0" />
+    <PackageVersion Include="SwiftBets.Contracts" Version="0.4.1" />
     <PackageVersion Include="xunit.v3" Version="4.0.1" />
   </ItemGroup>
 </Project>
