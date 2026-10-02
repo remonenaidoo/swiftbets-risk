@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using SwiftBets.BuildingBlocks.Observability;
 using SwiftBets.BuildingBlocks.Web;
 using SwiftBets.Risk.Application;
@@ -13,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddSwiftBetsObservability("swiftbets-risk");
 builder.Services.AddSwiftBetsWeb();
 builder.Services.AddSwiftBetsJwtBearer(builder.Configuration);
+builder.Services.ConfigureHttpJsonOptions(o => o.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)));
 builder.Services.AddRiskApplication();
 builder.Services.AddRiskInfrastructure(builder.Configuration);
 
