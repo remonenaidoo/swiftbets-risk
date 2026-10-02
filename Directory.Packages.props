@@ -5,11 +5,22 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
     <PackageVersion Include="NetArchTest.Rules" Version="1.3.2" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="SwiftBets.BuildingBlocks.Core" Version="0.5.0" />
-    <PackageVersion Include="SwiftBets.BuildingBlocks.Messaging" Version="0.5.0" />
-    <PackageVersion Include="SwiftBets.BuildingBlocks.Observability" Version="0.5.0" />
-    <PackageVersion Include="SwiftBets.BuildingBlocks.Web" Version="0.5.0" />
-    <PackageVersion Include="SwiftBets.Contracts" Version="2.0.0" />
+    <PackageVersion Include="SwiftBets.BuildingBlocks.Core" Version="0.7.0" />
+    <PackageVersion Include="SwiftBets.BuildingBlocks.Messaging" Version="0.7.0" />
+    <PackageVersion Include="SwiftBets.BuildingBlocks.Observability" Version="0.7.0" />
+    <PackageVersion Include="SwiftBets.BuildingBlocks.Web" Version="0.7.0" />
+    <PackageVersion Include="SwiftBets.Contracts" Version="2.2.0" />
     <PackageVersion Include="xunit.v3" Version="4.0.1" />
+    <PackageVersion Include="Akka" Version="1.5.71" />
+    <PackageVersion Include="Akka.Cluster.Sharding" Version="1.5.71" />
+    <PackageVersion Include="Akka.TestKit.Xunit" Version="1.5.71" />
+    <PackageVersion Include="Dapper" Version="2.1.89" />
+    <PackageVersion Include="Npgsql" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.CommandLine" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="10.10.0" />
+    <PackageVersion Include="SwiftBets.BuildingBlocks.Persistence" Version="0.7.0" />
+    <PackageVersion Include="SwiftBets.BuildingBlocks.Testing" Version="0.7.0" />
   </ItemGroup>
 </Project>
