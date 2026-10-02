@@ -49,6 +49,19 @@ public sealed class FixtureActorTests(PostgresFixture postgres) : TestKit
         _publisher.Exposures.ShouldHaveSingleItem().Suspended.ShouldBeTrue();
     }
 
+    [Fact]
+    public async Task An_alert_is_stored_and_read_back_for_the_console()
+    {
+        var store = await StoreAsync();
+        var alert = new AlertView(Guid.NewGuid(), PatternKind.RepeatedBet, "f-1", "home", [Guid.NewGuid()], [Guid.NewGuid(), Guid.NewGuid()], 3_000, "Three in a row.",
+            new DateTimeOffset(2026, 10, 3, 9, 0, 0, TimeSpan.Zero));
+
+        await store.AddAlertAsync(alert, TestContext.Current.CancellationToken);
+
+        var read = (await store.AlertsAsync(10, TestContext.Current.CancellationToken)).ShouldHaveSingleItem();
+        (read.Kind, read.CouponIds.Count, read.RaisedAt).ShouldBe((PatternKind.RepeatedBet, 2, alert.RaisedAt));
+    }
+
     private Props Props(PostgresRisk store) => FixtureActor.Props("f-1", store, store, _publisher, Options, TimeProvider.System);
 
     private static CouponExposure Coupon(long payout) => new(Guid.NewGuid(), Guid.NewGuid(), [new Outcome("m-1", "home")], 1_000, payout);

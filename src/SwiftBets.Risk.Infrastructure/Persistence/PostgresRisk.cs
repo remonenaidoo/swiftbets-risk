@@ -122,5 +122,24 @@ public sealed class PostgresRisk(NpgsqlDataSource dataSource) : IRiskJournal, IC
 
     private sealed record ViewRow(string FixtureId, long Version, long WorstCaseMinor, long CapMinor, bool CapOverridden, bool Suspended, string Outcomes, DateTime UpdatedAt);
 
-    private sealed record AlertRow(Guid AlertId, string Kind, string FixtureId, string? SelectionId, Guid[] PunterIds, Guid[] CouponIds, long TotalStakeMinor, string Summary, DateTime RaisedAt);
+    private sealed class AlertRow
+    {
+        public Guid AlertId { get; init; }
+
+        public string Kind { get; init; } = string.Empty;
+
+        public string FixtureId { get; init; } = string.Empty;
+
+        public string? SelectionId { get; init; }
+
+        public Guid[] PunterIds { get; init; } = [];
+
+        public Guid[] CouponIds { get; init; } = [];
+
+        public long TotalStakeMinor { get; init; }
+
+        public string Summary { get; init; } = string.Empty;
+
+        public DateTime RaisedAt { get; init; }
+    }
 }
