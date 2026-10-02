@@ -3,8 +3,17 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SwiftBets.BuildingBlocks.Core" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
     <PackageReference Include="SwiftBets.BuildingBlocks.Messaging" />
+    <PackageReference Include="SwiftBets.BuildingBlocks.Persistence" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Akka" />
+    <PackageReference Include="Akka.Cluster.Sharding" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Npgsql" />
     <ProjectReference Include="../SwiftBets.Risk.Application/SwiftBets.Risk.Application.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sql/*.sql" />
   </ItemGroup>
 </Project>

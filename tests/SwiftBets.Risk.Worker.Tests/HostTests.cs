@@ -47,7 +47,11 @@ public sealed class HostTests : IClassFixture<HostTests.Factory>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-        builder.UseSetting("Kafka:BootstrapServers", "127.0.0.1:1");
+            builder.UseSetting("Kafka:BootstrapServers", "127.0.0.1:1");
+            builder.UseSetting("ConnectionStrings:SbRisk", "Host=127.0.0.1;Port=1;Database=sb_risk;Username=none;Password=none");
+            builder.UseSetting("Risk:RunConsumers", "false");
+            builder.UseSetting("Jwt:Authority", "http://127.0.0.1:1");
+            builder.UseSetting("Jwt:RequireHttpsMetadata", "false");
         }
     }
 }

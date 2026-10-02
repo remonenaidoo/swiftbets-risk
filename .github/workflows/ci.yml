@@ -14,7 +14,7 @@ jobs:
   dotnet:
     uses: remonenaidoo/swiftbets-platform/.github/workflows/dotnet.yml@main
     with:
-      images: '[{"name": "swiftbets-risk", "dockerfile": "deploy/SwiftBets.Risk.Worker.Dockerfile"}]'
+      images: '[{"name": "swiftbets-risk", "dockerfile": "deploy/SwiftBets.Risk.Worker.Dockerfile"}, {"name": "swiftbets-risk-migrator", "dockerfile": "deploy/SwiftBets.Risk.Migrator.Dockerfile"}]'
     permissions:
       contents: read
       packages: write
