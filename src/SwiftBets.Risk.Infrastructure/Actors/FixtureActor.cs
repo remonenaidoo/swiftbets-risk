@@ -22,6 +22,9 @@ public sealed class FixtureActor : ReceiveActor
     private FixtureBook? _book;
     private bool? _publishedSuspended;
 
+    // The trader's cap, read once and again only when it changes, so a placement costs one journal write.
+    private (bool Loaded, long? Override) _cap;
+
     public FixtureActor(string fixtureId, IRiskJournal journal, IRiskStore store, IRiskPublisher publisher, RiskOptions options, TimeProvider time)
     {
         (_fixtureId, _journal, _store, _publisher, _options, _time) = (fixtureId, journal, store, publisher, options, time);
@@ -29,6 +32,7 @@ public sealed class FixtureActor : ReceiveActor
         ReceiveAsync<SettleOnFixture>(m => ChangeAsync(book => book.Settle(m.CouponId), new JournalEntry(0, null, m.CouponId)));
         ReceiveAsync<CapChanged>(async _ =>
         {
+            _cap = default;
             var view = await PublishAsync(await LoadAsync(), forceExposure: true);
             Sender.Tell(view);
         });
@@ -69,8 +73,7 @@ public sealed class FixtureActor : ReceiveActor
     private async Task<FixtureView> PublishAsync(FixtureBook book, bool forceExposure)
     {
         var view = await ViewAsync(book);
-        await _store.SaveViewAsync(view, CancellationToken.None);
-        await _publisher.LiabilityAsync(view, CancellationToken.None);
+        await Task.WhenAll(_store.SaveViewAsync(view, CancellationToken.None), _publisher.LiabilityAsync(view, CancellationToken.None));
         if (forceExposure || _publishedSuspended != view.Suspended)
         {
             var reason = view.Suspended
@@ -86,7 +89,12 @@ public sealed class FixtureActor : ReceiveActor
 
     private async Task<FixtureView> ViewAsync(FixtureBook book)
     {
-        var overridden = await _store.CapAsync(_fixtureId, CancellationToken.None);
+        if (!_cap.Loaded)
+        {
+            _cap = (true, await _store.CapAsync(_fixtureId, CancellationToken.None));
+        }
+
+        var overridden = _cap.Override;
         var cap = overridden ?? _options.DefaultFixtureCapMinor;
         var worst = book.WorstCaseMinor;
         return new FixtureView(_fixtureId, book.Version, worst, cap, overridden is not null, cap == 0 || worst >= cap, book.Totals(), _time.GetUtcNow());
