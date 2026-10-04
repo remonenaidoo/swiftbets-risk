@@ -4,5 +4,5 @@ namespace SwiftBets.Risk.Application;
 
 public static class ApplicationRegistration
 {
-    public static IServiceCollection AddRiskApplication(this IServiceCollection services) => services;
+    public static IServiceCollection AddRiskApplication(this IServiceCollection services) => services.AddSingleton<FraudHandler>();
 }

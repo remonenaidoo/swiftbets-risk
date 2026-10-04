@@ -15,6 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddSwiftBetsObservability("swiftbets-risk");
 builder.Services.AddSwiftBetsWeb();
 builder.Services.AddSwiftBetsJwtBearer(builder.Configuration);
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy(FraudEndpoints.Read, p => p.RequireClaim("perm", FraudEndpoints.Read))
+    .AddPolicy(FraudEndpoints.Write, p => p.RequireClaim("perm", FraudEndpoints.Write));
 builder.Services.ConfigureHttpJsonOptions(o => o.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)));
 builder.Services.AddRiskApplication();
 builder.Services.AddRiskInfrastructure(builder.Configuration);
@@ -26,6 +29,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapSwiftBetsOperationalEndpoints();
 app.MapRiskEndpoints();
+app.MapFraudEndpoints();
 app.MapGet("/", () => Results.Ok(new { service = "swiftbets-risk" })).ExcludeFromDescription();
 
 await app.RunAsync();
