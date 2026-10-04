@@ -18,10 +18,10 @@ public sealed class PostgresFraud(NpgsqlDataSource dataSource) : IFraudStore
         return row is null ? null : new GeoPoint(row.Latitude, row.Longitude, Utc(row.SeenAt));
     }
 
-    public async Task RecordDeviceAsync(DeviceSignal signal, CancellationToken cancellationToken)
+    public async Task<bool> RecordDeviceAsync(DeviceSignal signal, CancellationToken cancellationToken)
     {
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
-        await connection.ExecuteAsync(Command("Fraud.RecordDevice", signal, cancellationToken));
+        return await connection.ExecuteScalarAsync<bool>(Command("Fraud.RecordDevice", signal, cancellationToken));
     }
 
     public async Task<IReadOnlyList<Guid>> AccountsOnDeviceAsync(string deviceHash, CancellationToken cancellationToken)

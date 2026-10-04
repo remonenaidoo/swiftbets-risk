@@ -50,6 +50,18 @@ public sealed class FraudCaseTests(PostgresFixture postgres)
         (await fraud.ResolveAsync(Guid.NewGuid(), "ops-1", "cleared", "nothing", ct)).ShouldBeFalse();
     }
 
+    [Fact]
+    public async Task A_first_sighting_checks_the_email_once_and_later_sightings_do_not()
+    {
+        var (store, fraud) = await RigAsync();
+        var ct = TestContext.Current.CancellationToken;
+        var user = Guid.NewGuid();
+
+        (await fraud.DeviceAsync(Signal(user), "token", ct)).ShouldHaveSingleItem().Rule.ShouldBe(FraudRule.DisposableEmail);
+        await fraud.ResolveAsync((await store.CasesAsync(true, 10, ct))[0].CaseId, "ops-1", "cleared", "Known customer", ct);
+        (await fraud.DeviceAsync(Signal(user), "token", ct)).ShouldBeEmpty();
+    }
+
     private DeviceSignal Signal(Guid user) => new(user, "sign-in", Device, "10.0.0.0/24", null, "ZA", null, null, "test", _time.GetUtcNow());
 
     private async Task AppendStakeAsync(Guid punter, long stake)
@@ -78,6 +90,6 @@ public sealed class FraudCaseTests(PostgresFixture postgres)
 
     private sealed class NoProfiles : IProfileLookup
     {
-        public Task<string?> EmailAsync(string bearerToken, CancellationToken cancellationToken) => Task.FromResult<string?>(null);
+        public Task<string?> EmailAsync(string bearerToken, CancellationToken cancellationToken) => Task.FromResult<string?>("new@yopmail.com");
     }
 }

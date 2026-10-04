@@ -26,7 +26,8 @@ public interface IFraudStore
 {
     Task<GeoPoint?> LastLocationAsync(Guid userId, CancellationToken cancellationToken);
 
-    Task RecordDeviceAsync(DeviceSignal signal, CancellationToken cancellationToken);
+    /// <summary>Records the sighting; true when it is the customer's first.</summary>
+    Task<bool> RecordDeviceAsync(DeviceSignal signal, CancellationToken cancellationToken);
 
     Task<IReadOnlyList<Guid>> AccountsOnDeviceAsync(string deviceHash, CancellationToken cancellationToken);
 
@@ -112,13 +113,14 @@ public sealed class FraudHandler(IFraudStore store, IProfileLookup profiles, Fra
     {
         ArgumentNullException.ThrowIfNull(signal);
         var previous = await store.LastLocationAsync(signal.UserId, cancellationToken);
-        await store.RecordDeviceAsync(signal, cancellationToken);
+        var first = await store.RecordDeviceAsync(signal, cancellationToken);
         var flags = new List<FraudFlag?>
         {
             FraudRules.ManyAccounts(signal.UserId, await store.AccountsOnDeviceAsync(signal.DeviceHash, cancellationToken), _settings),
             FraudRules.ImpossibleTravel(previous, signal.Location, _settings),
         };
-        if (signal.Kind == "register" && bearerToken is { Length: > 0 })
+        // Registration does not sign in, so a customer's first sighting stands in for it.
+        if ((first || signal.Kind == "register") && bearerToken is { Length: > 0 })
         {
             flags.Add(FraudRules.DisposableEmail(await profiles.EmailAsync(bearerToken, cancellationToken), _settings));
         }
